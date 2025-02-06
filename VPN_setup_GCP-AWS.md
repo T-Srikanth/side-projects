@@ -14,7 +14,7 @@ Network CIDR on AWS: 10.0.1.0/24
 - Create VPC network:
     - *Name*: gcp-vpc
     - *Subnet creation mode*: Custom
-![gcp-vpc](/Assets/vpn_setup_ss/1.png)
+<img src="/Assets/vpn_setup_ss/1.png">
 - Subnets:
     - *Name*: gcp-subnet
     - *Region*: us-east1
