@@ -20,10 +20,10 @@ Network CIDR on AWS: 10.0.1.0/24
     - *Region*: us-east1
     - *IP stack type*: IPv4
     - *IPv4 range*: 10.0.0.0/24
-![gcp-subnet](/Assets/vpn_setup_ss/2.png)
+  <img src="/Assets/vpn_setup_ss/2.png">
 - Firewall rules:
     - Add necessary firewall rules and click create
-![firewall-rules](/Assets/vpn_setup_ss/4.png)
+  <img src="/Assets/vpn_setup_ss/4.png">
 - Create VPN connection(Classic VPN):
     - *Google Compute Engine VPN gateway*: gcp-vpn-gateway
     - *Network*: gcp-vpc
@@ -45,13 +45,13 @@ Network CIDR on AWS: 10.0.1.0/24
     - *VPC ID*: select aws-vpc
     - *Subnet name*: aws-subnet
     - *IPv4 subnet CIDR block*: 10.0.1.0/24
-![aws-subnet](/Assets/vpn_setup_ss/5.png)
+  <img src="/Assets/vpn_setup_ss/5.png">
 - Create Internet Gateway[^1] and attach it to aws-vpc
 - Update route table to route 0.0.0.0/0 traffic through the Internet Gateway
 - Create Customer gateway:
     - *Name*: gcp-gateway
     - *IP address*: <get reserved external IP address of gateway from GCP>
-![customer-gateway](/Assets/vpn_setup_ss/6.png)
+  <img src="/Assets/vpn_setup_ss/6.png">
 - Create Virtual private gateway:
     - *Name*: aws-gateway
     - Attach it to the aws-vpc
@@ -63,14 +63,14 @@ Network CIDR on AWS: 10.0.1.0/24
     - *Customer gateway ID*: select gcp-gateway
     - *Routing options*: Static
     - *Static IP prefixes*: 10.0.0.0/24
-![vpn-connection](/Assets/vpn_setup_ss/7.png)
+  <img src="/Assets/vpn_setup_ss/7.png">
 - Tunnel details:
     - Paste the pre-shared key copied from GCP
-![tunnel](/Assets/vpn_setup_ss/8.png)
+  <img src="/Assets/vpn_setup_ss/8.png">
 - Add route rule for destination 10.0.0.0/24(GCP network CIDR) to use aws-gateway
 - Allow ICMP traffic[^2] from 10.0.0.0/24(GCP network CIDR) in the security group.
 - Check tunnel status[^3] on AWS and GCP.
-![tunnel-status](/Assets/vpn_setup_ss/9.png)
+<img src="/Assets/vpn_setup_ss/9.png">
 
 [^1]: Internet gateway here is required if you want to connect to the instance from your local machine(via internet).
 [^2]: For testing purpose you can allow all traffic from 10.0.0.0/24(GCP network CIDR)
