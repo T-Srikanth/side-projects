@@ -2,6 +2,11 @@
 
 Objective: Route the app container's traffic through a WireGuard VPN tunnel to a mitmproxy server running in WireGuard mode before reaching the internet.
 
+## TL;DR
+- Copy `docker-compose.yml` and `start.sh` files onto a docker host.
+- Make `start.sh` executable.
+- Run `docker-compose up -d`
+
 ## Requirement
 
 The setup required routing network traffic from an app container through a WireGuard tunnel to a mitmproxy server before connecting to the internet. So the approach was to spin up three containers using docker compose:
@@ -27,7 +32,7 @@ As mentioned earlier, when the wireguard server is started in the `wg-mitm` cont
 - Now the client container can use the `wg0.conf` to establish a tunnel.
 
 ## Steps to implement
-- Copy `docker-compose.yml` and `start.sh` files on to a docker host.
+- Copy `docker-compose.yml` and `start.sh` files onto a docker host.
 - Make `start.sh` executable.
 - Run `docker-compose up -d`
 
