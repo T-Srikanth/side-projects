@@ -1,0 +1,54 @@
+services:
+  wg-mitm:
+    image: mitmproxy/mitmproxy
+    container_name: wg-mitm
+    cap_add:
+      - NET_ADMIN
+    tty: true
+    volumes:
+      - ./config:/config
+      - ./start.sh:/start.sh
+    command: ["/bin/bash", "/start.sh"]
+    ports:
+      - "51820:51820/udp"
+    networks:
+      - wg_network
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /config/wg0.conf"]
+      interval: 5s
+      timeout: 2s
+      retries: 6
+
+  wg-client:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wg-client
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./config:/config
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+    depends_on:
+      wg-mitm:
+        condition: service_healthy
+    networks:
+      - wg_network
+
+  app:
+    image: curlimages/curl
+    container_name: curl-app
+    network_mode: "service:wg-client"
+    command: ["tail", "-f", "/dev/null"]
+    depends_on:
+      - wg-client
+      - wg-mitm
+
+networks:
+  wg_network:
+    driver: bridge
