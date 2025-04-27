@@ -1,0 +1,44 @@
+provider "aws" {
+  region = var.aws_region
+}
+
+resource "aws_key_pair" "deployer" {
+  key_name   = var.key_name
+  public_key = file(var.public_key_path)
+}
+
+resource "aws_security_group" "openops_sg" {
+  name        = "openops-sg"
+  description = "Allow SSH and HTTP"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # SSH
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # HTTP
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical (Ubuntu)
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+}
