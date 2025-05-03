@@ -28,11 +28,22 @@ resource "aws_instance" "openops" {
                 ADMIN_USER=$(grep '^OPS_OPENOPS_ADMIN_EMAIL=' $HOME/openops/.env | cut -d= -f2-)
                 ADMIN_PASS=$(grep '^OPS_OPENOPS_ADMIN_PASSWORD=' $HOME/openops/.env | cut -d= -f2-)
 
+                # After extracting values from .env
+                SECRET_NAME="openops/credentials/$(hostname)"
+                SECRET_VALUE="{admin_user: $ADMIN_USER, admin_pass: $ADMIN_PASS, app_url: $APP_URL}"
+
+                # Create secret
+                aws secretsmanager create-secret --name "$SECRET_NAME" --description "OpenOps admin credentials" \
+                  --secret-string "$SECRET_VALUE" --region ${var.aws_region} || \
+                aws secretsmanager put-secret-value --secret-id "$SECRET_NAME" \
+                  --secret-string "$SECRET_VALUE" --region ${var.aws_region}
+
                 # Format the message
-                MESSAGE="✅ OpenOps is up and running on instance $(hostname)\n"
-                MESSAGE+="Application URL:    $APP_URL\n"
-                MESSAGE+="Admin Username:     $ADMIN_USER\n"
-                MESSAGE+="Admin Password:     $ADMIN_PASS\n"
+                MESSAGE="✅ OpenOps is up and running on instance: $(hostname)\n"
+                MESSAGE+="Application URL: $APP_URL\n"
+                MESSAGE+="Admin credentials stored securely in AWS Secrets Manager. You can either get secret using aws cli or check .env file on the OpenOps instance.\n"
+                MESSAGE+="Secret name: openops/credentials/$(hostname)"
+
 
               else
                 MESSAGE="❌ OpenOps installation failed on instance $(hostname). Check logs for more datails"

@@ -7,5 +7,5 @@ output "openops_url" {
 }
 
 output "message" {
-  value = "Instance will be provisioned after terraform apply. Confirm your SNS subscription to receive deployment status and login details."
+  value = "Instance will be provisioned after terraform apply. Confirm your SNS subscription to receive notification of deployment status."
 }

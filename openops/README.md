@@ -14,6 +14,7 @@ Objective: Create an EC2 instance on AWS and deploy OpenOps on it. Notify via em
 - An EC2 instance (default specs: t3.large, 50GB, ubuntu)
 - IAM resources (to enable EC2 instance to publish to SNS topic)
 - SNS topic and subscription
+- Secret in AWS Secrets Manager
 
 ### Steps
 - Ensure terraform is installed, create a separate directory and `cd` into it.
@@ -26,7 +27,8 @@ Objective: Create an EC2 instance on AWS and deploy OpenOps on it. Notify via em
 - Run terraform init, plan and apply.
 - By default you are expected to pass values for `public_key_path` and `sns_sbuscrition_email` variables on `terraform apply`.
 - You will receive a subscription confirmation email (check spam folder as well), which you'll have to confirm to receive notification after the deployment is finished.
-- Deployment of OpenOps typically takes 5–10 minutes after running `terraform apply`. You will receive an email with your login details upon successful completion.
+- Deployment of OpenOps typically takes 5–10 minutes after running `terraform apply`. You will receive a notification on your email.
+- Upon successful installation, login credentials are securely stored in AWS Secrets Manager. You can retrieve them using the AWS CLI (e.g., `aws secretsmanager get-secret-value --region <region> --secret-id <secret-name>`), or by accessing the `.env` file directly on the OpenOps EC2 instance.. 
 - That's it, login to your OpenOps application and explore.
 
 *Note: This setup is intended for testing only and is not production-ready. Sharing credentials without encryption and proper access controls is unsafe and strongly discouraged.*
