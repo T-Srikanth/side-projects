@@ -12,7 +12,7 @@ Objective: Create an EC2 instance on AWS and deploy OpenOps on it. Notify via em
 
 ### Resources created
 - An EC2 instance (default specs: t3.large, 50GB, ubuntu)
-- IAM resources (to enable EC2 instance to publish to SNS topic)
+- IAM resources (to enable EC2 instance to publish to SNS topic and also create secret on AWS Secrets Magnager)
 - SNS topic and subscription
 - Secret in AWS Secrets Manager
 
