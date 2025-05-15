@@ -17,10 +17,6 @@ variable "key_name" {
   default     = "openops-key"
 }
 
-variable "public_key_path" {
-  description = "Absolute path to your public SSH key"
-}
-
 variable "sns_sbuscrition_email" {
   description = "Email id to receive notification after the deployment"
 }

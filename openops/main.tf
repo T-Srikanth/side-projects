@@ -2,9 +2,20 @@ provider "aws" {
   region = var.aws_region
 }
 
+resource "tls_private_key" "devops_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+resource "local_file" "private_key" {
+  content  = tls_private_key.devops_key.private_key_pem
+  filename = "/home/ubuntu/.ssh/openops_priv.pem"
+  file_permission = "0400"
+}
+
 resource "aws_key_pair" "deployer" {
   key_name   = var.key_name
-  public_key = file(var.public_key_path)
+  public_key = tls_private_key.devops_key.public_key_openssh
 }
 
 resource "aws_security_group" "openops_sg" {

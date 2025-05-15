@@ -31,8 +31,8 @@ resource "aws_iam_policy" "sns_publish_policy" {
   })
 }
 
-resource "aws_iam_policy" "secretsmanager_put_policy" {
-  name = "secretsmanager-put-secret-policy"
+resource "aws_iam_policy" "secretsmanager_policy" {
+  name = "secretsmanager-secret-policy"
 
   policy = jsonencode({
     Version = "2012-10-17",
